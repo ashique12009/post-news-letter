@@ -23,10 +23,33 @@ class Menu
             'dashicons-email',
             6
         );
+
+        add_submenu_page(
+            'post-news-letter',
+            'Dashboard',
+            'Dashboard',
+            'manage_options',
+            'post-news-letter',
+            [$this, 'menu_page']
+        );
+
+        add_submenu_page(
+            'post-news-letter',
+            'Welcome Template Form',
+            'Welcome Template Form',
+            'manage_options',
+            'post-news-letter-welcome-template-form',
+            [$this, 'menu_welcome_template_form_page']
+        );
     }
 
     public function menu_page()
     {
         include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/dashboard.php';
+    }
+
+    public function menu_welcome_template_form_page()
+    {
+        include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/welcome-template-form.php';
     }
 }
