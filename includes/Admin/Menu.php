@@ -35,11 +35,11 @@ class Menu
 
         add_submenu_page(
             'post-news-letter',
-            'Welcome Template Form',
-            'Welcome Template Form',
+            'Welcome Template',
+            'Welcome Template',
             'manage_options',
-            'post-news-letter-welcome-template-form',
-            [$this, 'menu_welcome_template_form_page']
+            'welcome-template-form',
+            [$this, 'menu_welcome_email_template_form_page']
         );
     }
 
@@ -48,8 +48,9 @@ class Menu
         include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/dashboard.php';
     }
 
-    public function menu_welcome_template_form_page()
+    public function menu_welcome_email_template_form_page()
     {
-        include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/welcome-template-form.php';
+        $welcome_template = new \Post_News_Letter\Admin\WelcomeTemplate();
+        $welcome_template->welcome_template_form();
     }
 }

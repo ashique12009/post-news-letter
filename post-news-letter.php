@@ -58,6 +58,8 @@ class Post_News_Letter
             if (!class_exists('\Post_News_Letter\Admin\Menu')) {
                 require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Menu.php';
                 new \Post_News_Letter\Admin\Menu();
+                include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/WelcomeTemplate.php';
+                new \Post_News_Letter\Admin\WelcomeTemplate();
             }
         }
         else {
