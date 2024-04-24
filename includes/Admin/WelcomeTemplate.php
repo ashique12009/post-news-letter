@@ -10,13 +10,7 @@ class WelcomeTemplate {
 
     public function welcome_template_form()
     {
-        $welcome_template = '';
-
-        $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
-
-        if ( $action == 'edit' ) {
-            $welcome_template = get_option('post_news_letter_welcome_template');
-        }
+        $welcome_template = get_option('post_news_letter_welcome_template') ? get_option('post_news_letter_welcome_template') : '';
 
         include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/welcome-template-form.php';
     }
