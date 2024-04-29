@@ -50,7 +50,7 @@ class Menu
 
     public function menu_welcome_email_template_form_page()
     {
-        $welcome_template = new \Post_News_Letter\Admin\WelcomeTemplate();
+        $welcome_template = new \Post_News_Letter\Admin\Welcome_Template();
         $welcome_template->welcome_template_form();
     }
 }

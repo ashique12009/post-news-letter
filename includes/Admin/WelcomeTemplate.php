@@ -1,7 +1,7 @@
 <?php
 namespace Post_News_Letter\Admin;
 
-class WelcomeTemplate {
+class Welcome_Template {
 
     public function __construct()
     {
