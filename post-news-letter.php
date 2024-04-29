@@ -43,6 +43,7 @@ class Post_News_Letter
 
     public function define_constants()
     {
+        define('POST_NEWS_LETTER_VERSION', '1.0');
         define('POST_NEWS_LETTER_PLUGIN_FILE', __FILE__);
         define('POST_NEWS_LETTER_PLUGIN_PATH', __DIR__);
         define('POST_NEWS_LETTER_PLUGIN_URL', plugins_url('', __FILE__));
@@ -50,10 +51,32 @@ class Post_News_Letter
 
     public function activate()
     {
+        global $wpdb;
+
+        $table_prefix = $wpdb->prefix;
+
+        $table_sql = 'CREATE TABLE `'.$table_prefix.'postnewsletter_emails` (
+            `id` int NOT NULL AUTO_INCREMENT,
+            `email_address` text NOT NULL,
+            `ip` varchar(128) NOT NULL,
+            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci';
+
+        include_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+        dbDelta($table_sql);
     }
 
     public function class_initialize()
     {
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            if (!class_exists('\Post_News_Letter\Frontend\Shortcode_Form_Ajax')) {
+                require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Frontend/ShortcodeFormAjax.php';
+                new \Post_News_Letter\Frontend\Shortcode_Form_Ajax();
+            }
+        }
+        
         if (is_admin()) {
             if (!class_exists('\Post_News_Letter\Admin\Menu')) {
                 require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Menu.php';
