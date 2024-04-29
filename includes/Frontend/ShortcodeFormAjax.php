@@ -34,7 +34,7 @@ class Shortcode_Form_Ajax
         $result = $wpdb->get_row($wpdb->prepare("SELECT id FROM $table WHERE email_address = %s", $email));
 
         if ($result) {
-            wp_send_json_error('Email already exists');
+            wp_send_json_error('Email already exists!');
         }
 
         $wpdb->insert($table, [

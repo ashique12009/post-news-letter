@@ -31,8 +31,10 @@ class Shortcode
 
     public function enqueue_stylesheet_scripts()
     {
+        wp_enqueue_style('post-news-letter-toastr-stylesheet', POST_NEWS_LETTER_PLUGIN_URL . '/assets/css/toastr.min.css', [], POST_NEWS_LETTER_VERSION);
         wp_enqueue_style('post-news-letter-frontend-stylesheet', POST_NEWS_LETTER_PLUGIN_URL . '/assets/css/frontend-stylesheet.css', [], POST_NEWS_LETTER_VERSION);
-    
+            
+        wp_enqueue_script('post-news-letter-toastr-script', POST_NEWS_LETTER_PLUGIN_URL . '/assets/js/toastr.min.js', ['jquery'], POST_NEWS_LETTER_VERSION, true);
         wp_enqueue_script('post-news-letter-frontend-script', POST_NEWS_LETTER_PLUGIN_URL . '/assets/js/frontend-script.js', ['jquery'], POST_NEWS_LETTER_VERSION, true);
     
         $script_data_array = [

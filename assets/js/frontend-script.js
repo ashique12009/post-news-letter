@@ -5,26 +5,27 @@ jQuery(function($) {
 
         let input = $(this).serialize();
 
-        console.log('input');
-        console.log(input);
-
         if (input != '') {
             let data = {
                 'action': 'get_newsletter_email_action',
                 'email_input': input,
             }
-            
+
             $.post(script_data.ajax_url, data, function(response) {
-                //$('#txtHint').html(response);
-                console.log('response');
-                console.log(response);
+                if (response.success) {
+                    toastr.success(response.data, "Success");
+                    $('form.post-news-letter-subscription-form').children('input#pnls-email-field').val('');
+                }
+                if (response.success == false) {
+                    toastr.error(response.data, "Error");
+                }
             })
             .fail(function() {
-                console.log('Something went wrong!');
+                toastr.error("Something went wrong!", "Error");
             });
         }
         else {
-            console.log('Empty email field');
+            toastr.error("Empty email field!", "Error");
         }
     });
 
