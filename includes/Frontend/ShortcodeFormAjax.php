@@ -14,22 +14,36 @@ class Shortcode_Form_Ajax
 
     public function post_news_letter_form_ajax_handler()
     {
-        echo 'HERE AJAX';
-        // exit('HERE AJAX');
-        // $nonce = $_POST['nonce'];
-        // $email = $_POST['email_input'];
+        parse_str($_POST['email_input'], $data);
 
-        // die('email n nonce' . $nonce . $email);
+        // Access individual values
+        $email = $data['email'];
+        $nonce = $data['_wpnonce'];
 
-        // if (empty($_POST) || !wp_verify_nonce($nonce, 'email-nonce')) {
-        //     wp_send_json_error('Nonce error');
-        // }
+        if (!wp_verify_nonce($nonce, 'get_newsletter_email_nonce')) {
+            wp_send_json_error('Nonce error');
+        }
 
-        // if ($email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        //     wp_send_json_error('Invalid email address');
-        // }
+        if ($email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            wp_send_json_error('Invalid email address');
+        }
 
-        // // Send success response
-        // wp_send_json_success('Email subscribed successfully');
+        global $wpdb;
+        $table = $wpdb->prefix . 'postnewsletter_emails';
+        // Check if email already exists
+        $result = $wpdb->get_row($wpdb->prepare("SELECT id FROM $table WHERE email_address = %s", $email));
+
+        if ($result) {
+            wp_send_json_error('Email already exists');
+        }
+
+        $wpdb->insert($table, [
+            'email_address' => $email,
+            'ip'            => $_SERVER['REMOTE_ADDR'],
+            'created_at'    => date('Y-m-d H:i:s'),
+        ]);
+
+        // Send success response
+        wp_send_json_success('Email subscribed successfully');
     }
 }
