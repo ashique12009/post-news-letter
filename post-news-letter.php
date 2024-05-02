@@ -81,8 +81,14 @@ class Post_News_Letter
             if (!class_exists('\Post_News_Letter\Admin\Menu')) {
                 require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Menu.php';
                 new \Post_News_Letter\Admin\Menu();
+            }
+            if (!class_exists('\Post_News_Letter\Admin\Settings')) {
                 include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/WelcomeTemplate.php';
                 new \Post_News_Letter\Admin\Welcome_Template();
+            }
+            if (!class_exists('\Post_News_Letter\Admin\Dashboard')) {
+                require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Dashboard.php';
+                new \Post_News_Letter\Admin\Dashboard();
             }
         }
         else {

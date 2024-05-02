@@ -19,7 +19,7 @@ class Menu
             'Post News Letter',
             'manage_options',
             'post-news-letter',
-            [$this, 'menu_page'],
+            [$this, 'dashboard_page'],
             'dashicons-email',
             6
         );
@@ -30,7 +30,7 @@ class Menu
             'Dashboard',
             'manage_options',
             'post-news-letter',
-            [$this, 'menu_page']
+            [$this, 'dashboard_page']
         );
 
         add_submenu_page(
@@ -43,7 +43,7 @@ class Menu
         );
     }
 
-    public function menu_page()
+    public function dashboard_page()
     {
         include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/dashboard.php';
     }

@@ -1,5 +1,11 @@
-<?php 
-echo '<div class="wrap">';
-echo '<h1>Dashboard</h1>';
-echo '<p class="description">When new post is created then this plugin will send a email to you with new post title and link.</p>';
-echo '</div>';
+<div class="wrap">
+    <h1>Dashboard - Post news letter</h1>
+    <div class="grid auto-fill">
+        <?php 
+        $dashboard = new \Post_News_Letter\Admin\Dashboard();
+        ?>
+        <div class="grid-info grid-item"><h1>Total Emails Subscribed: <?php echo $dashboard->dashboard_page_get_total_email_subscribed(); ?></h1></div>
+        <div class="grid-success grid-item"><h1>Emails Subscribed Current Month: 0</h1></div>
+        <div class="grid-warning grid-item"><h1>Emails Subscribed Today: 0</h1></div>
+    </div>
+</div>
