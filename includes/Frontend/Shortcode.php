@@ -16,7 +16,8 @@ class Shortcode
     {
         ob_start();
         ?>
-            <form class="post-news-letter-subscription-form" type="post" action="">
+            <p id="pnls-loading">Please wait!</p>
+            <form class="post-news-letter-subscription-form" id="pnls-form" type="post" action="">
                 <input type="email" name="email" id="pnls-email-field" placeholder="Your Email Address" value="" required />
                 <?php wp_nonce_field('get_newsletter_email_nonce');?>
                 <input type="hidden" name="action" value="get_newsletter_email_action" />
