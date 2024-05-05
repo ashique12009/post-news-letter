@@ -32,4 +32,13 @@ class Dashboard
         $total        = $wpdb->get_var($sql);
         return $total;
     }
+
+    public function dashboard_page_get_total_email_subscribed_today()
+    {
+        global $wpdb;
+        $table_prefix = $wpdb->prefix;
+        $sql          = "SELECT COUNT(*) FROM `" . $table_prefix . "postnewsletter_emails` WHERE DATE(`created_at`) = CURDATE()";
+        $total        = $wpdb->get_var($sql);
+        return $total;
+    }
 }
