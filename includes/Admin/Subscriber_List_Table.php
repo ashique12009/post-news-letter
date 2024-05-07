@@ -43,7 +43,7 @@ class Subscriber_List_Table extends \WP_List_Table
         $sortable = [];
         $this->_column_headers = [$columns, $hidden, $sortable];
 
-        $per_page   = 2;
+        $per_page   = 25;
         $offset     = ($this->get_pagenum() - 1) * $per_page;
         $order_by   = 'id';
         $order      = 'ASC';
