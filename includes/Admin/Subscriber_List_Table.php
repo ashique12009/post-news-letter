@@ -79,4 +79,40 @@ class Subscriber_List_Table extends \WP_List_Table
         $total        = $wpdb->get_var($sql);
         return $total;
     }
+
+    public function get_subscriber_row($id) 
+    {
+        global $wpdb;
+        $table_prefix = $wpdb->prefix;
+        $sql          = "SELECT id FROM {$table_prefix}postnewsletter_emails WHERE id=%d";
+        return $wpdb->get_row($wpdb->prepare($sql, $id));
+    }
+
+    public function column_cb($item)
+    {
+        return sprintf('<input type="checkbox" name="subscriber[]" value="%s" />', $item->id);
+    }
+
+    public function column_id($item)
+    {
+        $actions = [];
+        $actions['delete'] = sprintf('<a href="?page=%s&action=%s&id=%s" onclick="return confirm(\'Are you sure?\')">Delete</a>', $_REQUEST['page'], 'delete', $item->id);  
+        return $item->id . $this->row_actions($actions);
+    }
+
+    public function get_bulk_actions()
+    {
+        $actions = [
+            'delete' => 'Delete',
+        ];
+
+        return $actions;
+    }
+
+    public function delete_subscriber($id)
+    {
+        global $wpdb;
+        $table_prefix = $wpdb->prefix;
+        return $wpdb->delete($table_prefix . 'postnewsletter_emails', ['id' => $id], ['%d']);
+    }
 }
