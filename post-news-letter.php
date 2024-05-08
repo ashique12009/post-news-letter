@@ -90,6 +90,10 @@ class Post_News_Letter
                 require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Dashboard.php';
                 new \Post_News_Letter\Admin\Dashboard();
             }
+            if (!class_exists('\Post_News_Letter\Admin\Send_Post_Email')) {
+                require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Send_Post_Email.php';
+                new \Post_News_Letter\Admin\Send_Post_Email();
+            }
         }
         else {
             if (!class_exists('\Post_News_Letter\Frontend\Shortcode')) {
