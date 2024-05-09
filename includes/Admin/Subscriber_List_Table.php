@@ -38,6 +38,8 @@ class Subscriber_List_Table extends \WP_List_Table
 
     public function prepare_items()
     {
+        $this->process_bulk_action();
+
         $columns  = $this->get_columns();
         $hidden   = [];
         $sortable = [];
@@ -80,14 +82,6 @@ class Subscriber_List_Table extends \WP_List_Table
         return $total;
     }
 
-    public function get_subscriber_row($id) 
-    {
-        global $wpdb;
-        $table_prefix = $wpdb->prefix;
-        $sql          = "SELECT id FROM {$table_prefix}postnewsletter_emails WHERE id=%d";
-        return $wpdb->get_row($wpdb->prepare($sql, $id));
-    }
-
     public function column_cb($item)
     {
         return sprintf('<input type="checkbox" name="subscriber[]" value="%s" />', $item->id);
@@ -96,23 +90,48 @@ class Subscriber_List_Table extends \WP_List_Table
     public function column_id($item)
     {
         $actions = [];
-        $actions['delete'] = sprintf('<a href="?page=%s&action=%s&id=%s" onclick="return confirm(\'Are you sure?\')">Delete</a>', $_REQUEST['page'], 'delete', $item->id);  
+
+        $actions['delete'] = sprintf('<a href="%s" onclick="return confirm(\'Are you sure?\')">Delete</a>', 
+            wp_nonce_url(admin_url('admin.php?page=post-news-letter&action=delete_subscriber&subscriber_id=' . $item->id), 
+            'subscriber_delete_action'));
+
         return $item->id . $this->row_actions($actions);
     }
 
     public function get_bulk_actions()
     {
         $actions = [
-            'delete' => 'Delete',
+            'subscriber_delete' => 'Delete',
         ];
 
         return $actions;
     }
 
-    public function delete_subscriber($id)
-    {
-        global $wpdb;
-        $table_prefix = $wpdb->prefix;
-        return $wpdb->delete($table_prefix . 'postnewsletter_emails', ['id' => $id], ['%d']);
+    // Handle the bulk delete action
+    public function process_bulk_action() {
+        if (isset($_GET['action']) && $_GET['action'] === 'subscriber_delete' && isset($_GET['subscriber'])) {
+            var_dump($_GET['action'], $_GET['subscriber']);exit;
+            // Verify nonce
+            if (isset($_GET['_wpnonce_bulk_action']) && !empty($_GET['_wpnonce_bulk_action'])) {
+                $nonce = sanitize_text_field($_GET['_wpnonce_bulk_action']);
+                if (!wp_verify_nonce($nonce, 'bulk-action')) {
+                    die('Security check failed');
+                }
+            }
+    
+            $items = isset($_GET['subscriber']) ? $_GET['subscriber'] : array();
+            if (empty($items)) {
+                return;
+            }
+            foreach ($items as $item_id) {
+                $this->delete_subscriber($item_id);
+            }
+    
+            // Redirect back to the list table after deletion
+            $redirect_url = remove_query_arg(array('action', 'subscriber', '_wpnonce'), wp_unslash($_SERVER['REQUEST_URI']));
+            wp_redirect($redirect_url);
+            exit;
+        }
     }
+
 }

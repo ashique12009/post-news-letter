@@ -45,7 +45,7 @@ class Menu
 
     public function dashboard_page()
     {
-        include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/dashboard.php';
+        require_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/dashboard.php';
     }
 
     public function menu_welcome_email_template_form_page()
