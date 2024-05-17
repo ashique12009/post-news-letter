@@ -10,7 +10,8 @@ class Welcome_Template {
 
     public function welcome_template_form()
     {
-        $welcome_template = get_option('post_news_letter_welcome_template') ? get_option('post_news_letter_welcome_template') : '';
+        $welcome_email_subject  = get_option('post_news_letter_welcome_email_subject') ? get_option('post_news_letter_welcome_email_subject') : '';
+        $welcome_template       = get_option('post_news_letter_welcome_template') ? get_option('post_news_letter_welcome_template') : '';
 
         include_once POST_NEWS_LETTER_PLUGIN_PATH . '/includes/Admin/Views/welcome-template-form.php';
     }
@@ -27,8 +28,10 @@ class Welcome_Template {
             wp_die('You do not have sufficient permissions to access this page.');
         }
 
-        $welcome_template = isset($_POST['welcome_template']) ? $_POST['welcome_template'] : '';
+        $welcome_email_subject  = isset($_POST['welcome_email_subject']) ? $_POST['welcome_email_subject'] : '';
+        $welcome_template       = isset($_POST['welcome_template']) ? $_POST['welcome_template'] : '';
 
+        update_option('post_news_letter_welcome_email_subject', $welcome_email_subject);
         update_option('post_news_letter_welcome_template', $welcome_template);
 
         wp_safe_redirect(admin_url('admin.php?page=welcome-template-form&success=1'));

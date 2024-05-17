@@ -37,13 +37,24 @@ class Shortcode_Form_Ajax
             wp_send_json_error('This email address is already subscribed!');
         }
 
-        $wpdb->insert($table, [
+        $status = $wpdb->insert($table, [
             'email_address' => $email,
             'ip'            => $_SERVER['REMOTE_ADDR'],
             'created_at'    => date('Y-m-d H:i:s'),
         ]);
 
-        // Send success response
-        wp_send_json_success('Email subscribed successfully');
+        if ($status) {
+            // Send welcome email
+            $subject = get_option('post_news_letter_welcome_email_subject') ? get_option('post_news_letter_welcome_email_subject') : 'Welcome to our blog world';
+            $message = get_option('post_news_letter_welcome_template') ? get_option('post_news_letter_welcome_template') : '';
+
+            wp_mail($email, $subject, $message);
+
+            // Send success response
+            wp_send_json_success('Email subscribed successfully');
+        }
+
+        // Something went wront
+        wp_send_json_error('Something went wrong!');
     }
 }
